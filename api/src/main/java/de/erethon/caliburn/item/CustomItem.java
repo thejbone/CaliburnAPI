@@ -56,10 +56,10 @@ public class CustomItem extends ExItem {
     protected ItemMeta meta;
     private String name;
 
-    private DamageHandler damageHandler;
-    private DropHandler dropHandler;
-    private HitHandler hitHandler;
-    private RightClickHandler rightClickHandler;
+    private final List<DamageHandler> damageHandlers = new ArrayList<>();
+    private final List<DropHandler> dropHandlers = new ArrayList<>();
+    private final List<HitHandler> hitHandlers = new ArrayList<>();
+    private final List<RightClickHandler> rightClickHandlers = new ArrayList<>();
 
     private String skullOwner, textureValue;
     private String nbt;
@@ -134,21 +134,37 @@ public class CustomItem extends ExItem {
             deserialized.meta = Bukkit.getItemFactory().getItemMeta(deserialized.getMaterial());
         }
 
-        Object damageHandler = args.get("damageHandler");
-        if (damageHandler instanceof String) {
-            deserialized.setDamageHandler(DamageHandler.create((String) damageHandler));
+        Object damageHandlers = args.get("damageHandlers");
+        if (damageHandlers instanceof List) {
+            for (Object handler : (List) damageHandlers) {
+                if (handler instanceof String) {
+                    deserialized.damageHandlers.add(DamageHandler.create((String) handler));
+                }
+            }
         }
-        Object dropHandler = args.get("dropHandler");
-        if (dropHandler instanceof String) {
-            deserialized.setDropHandler(DropHandler.create((String) dropHandler));
+        Object dropHandlers = args.get("dropHandlers");
+        if (dropHandlers instanceof List) {
+            for (Object handler : (List) dropHandlers) {
+                if (handler instanceof String) {
+                    deserialized.dropHandlers.add(DropHandler.create((String) handler));
+                }
+            }
         }
-        Object hitHandler = args.get("hitHandler");
-        if (hitHandler instanceof String) {
-            deserialized.setHitHandler(HitHandler.create((String) hitHandler));
+        Object hitHandlers = args.get("hitHandlers");
+        if (hitHandlers instanceof List) {
+            for (Object handler : (List) hitHandlers) {
+                if (handler instanceof String) {
+                    deserialized.hitHandlers.add(HitHandler.create((String) handler));
+                }
+            }
         }
-        Object rightClickHandler = args.get("rightClickHandler");
-        if (rightClickHandler instanceof String) {
-            deserialized.setRightClickHandler(RightClickHandler.create((String) rightClickHandler));
+        Object rightClickHandlers = args.get("rightClickHandlers");
+        if (rightClickHandlers instanceof List) {
+            for (Object handler : (List) rightClickHandlers) {
+                if (handler instanceof String) {
+                    deserialized.rightClickHandlers.add(RightClickHandler.create((String) handler));
+                }
+            }
         }
 
         Object skullOwner = args.get("skullOwner"), textureValue = args.get("textureValue");
@@ -384,25 +400,16 @@ public class CustomItem extends ExItem {
      * @return if the custom item has a DamageHandler
      */
     public boolean hasDamageHandler() {
-        return damageHandler != null;
+        return !damageHandlers.isEmpty();
     }
 
     /**
-     * Returns the DamageHandler.
+     * Returns the DamageHandlers.
      *
-     * @return the DamageHandler
+     * @return the DamageHandlers
      */
-    public DamageHandler getDamageHandler() {
-        return damageHandler;
-    }
-
-    /**
-     * Sets the DamageHandler.
-     *
-     * @param handler the handler to set
-     */
-    public void setDamageHandler(DamageHandler handler) {
-        damageHandler = handler;
+    public List<DamageHandler> getDamageHandlers() {
+        return damageHandlers;
     }
 
     /**
@@ -411,25 +418,16 @@ public class CustomItem extends ExItem {
      * @return if the custom item has a DropHandler
      */
     public boolean hasDropHandler() {
-        return dropHandler != null;
+        return !dropHandlers.isEmpty();
     }
 
     /**
-     * Returns the DropHandler.
+     * Returns the DropHandlers.
      *
-     * @return the DropHandler
+     * @return the DropHandlers
      */
-    public DropHandler getDropHandler() {
-        return dropHandler;
-    }
-
-    /**
-     * Sets the DropHandler.
-     *
-     * @param handler the handler to set
-     */
-    public void setDropHandler(DropHandler handler) {
-        dropHandler = handler;
+    public List<DropHandler> getDropHandlers() {
+        return dropHandlers;
     }
 
     /**
@@ -438,25 +436,16 @@ public class CustomItem extends ExItem {
      * @return if the custom item has a HitHandler
      */
     public boolean hasHitHandler() {
-        return hitHandler != null;
+        return !hitHandlers.isEmpty();
     }
 
     /**
-     * Returns the HitHandler.
+     * Returns the HitHandlers.
      *
-     * @return the HitHandler
+     * @return the HitHandlers
      */
-    public HitHandler getHitHandler() {
-        return hitHandler;
-    }
-
-    /**
-     * Sets the HitHandler.
-     *
-     * @param handler the handler to set
-     */
-    public void setHitHandler(HitHandler handler) {
-        hitHandler = handler;
+    public List<HitHandler> getHitHandlers() {
+        return hitHandlers;
     }
 
     /**
@@ -465,25 +454,16 @@ public class CustomItem extends ExItem {
      * @return if the custom item has a RightClickHandler
      */
     public boolean hasRightClickHandler() {
-        return rightClickHandler != null;
+        return !rightClickHandlers.isEmpty();
     }
 
     /**
-     * Returns the RightClickHandler.
+     * Returns the RightClickHandlers.
      *
-     * @return the RightClickHandler
+     * @return the RightClickHandlers
      */
-    public RightClickHandler getRightClickHandler() {
-        return rightClickHandler;
-    }
-
-    /**
-     * Sets the RightClickHandler.
-     *
-     * @param handler the handler to set
-     */
-    public void setRightClickHandler(RightClickHandler handler) {
-        rightClickHandler = handler;
+    public List<RightClickHandler> getRightClickHandlers() {
+        return rightClickHandlers;
     }
 
     /* Actions */
@@ -528,18 +508,35 @@ public class CustomItem extends ExItem {
         config.put("idType", idType.toString());
         config.put("meta", meta);
 
-        if (damageHandler != null) {
-            config.put("damageHandler", damageHandler.getClass().getName());
+        if (damageHandlers.size() > 0) {
+            List<String> handlers = new ArrayList<>(damageHandlers.size());
+            for (DamageHandler handler : damageHandlers) {
+                handlers.add(handler.getClass().getName());
+            }
+            config.put("damageHandlers", handlers);
         }
-        if (dropHandler != null) {
-            config.put("dropHandler", dropHandler.getClass().getName());
+        if (dropHandlers.size() > 0) {
+            List<String> handlers = new ArrayList<>(dropHandlers.size());
+            for (DropHandler handler : dropHandlers) {
+                handlers.add(handler.getClass().getName());
+            }
+            config.put("dropHandlers", handlers);
         }
-        if (hitHandler != null) {
-            config.put("hitHandler", hitHandler.getClass().getName());
+        if (hitHandlers.size() > 0) {
+            List<String> handlers = new ArrayList<>(hitHandlers.size());
+            for (HitHandler handler : hitHandlers) {
+                handlers.add(handler.getClass().getName());
+            }
+            config.put("hitHandlers", handlers);
         }
-        if (rightClickHandler != null) {
-            config.put("rightClickHandler", rightClickHandler.getClass().getName());
+        if (rightClickHandlers.size() > 0) {
+            List<String> handlers = new ArrayList<>(rightClickHandlers.size());
+            for (RightClickHandler handler : rightClickHandlers) {
+                handlers.add(handler.getClass().getName());
+            }
+            config.put("rightClickHandlers", handlers);
         }
+
         if (skullOwner != null) {
             config.put("skullOwner", skullOwner);
         }

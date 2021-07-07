@@ -118,9 +118,6 @@ public class CaliburnAPI {
         Bukkit.getPluginManager().registerEvents(new MobListener(this), plugin);
         ItemListener il = new ItemListener(this);
         Bukkit.getPluginManager().registerEvents(il, plugin);
-        if (CompatibilityHandler.getInstance().isSpigot()) {
-            Bukkit.getPluginManager().registerEvents(il.new Spigot(), plugin);
-        }
 
         ConfigurationSerialization.registerClass(CustomItem.class);
         ConfigurationSerialization.registerClass(CustomMob.class);

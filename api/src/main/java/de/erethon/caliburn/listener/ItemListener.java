@@ -81,9 +81,7 @@ public class ItemListener implements Listener {
         if (!(exItem instanceof CustomItem)) {
             return;
         }
-        if (((CustomItem) exItem).hasHitHandler()) {
-            ((CustomItem) exItem).getHitHandler().onHit(weapon, player, event.getEntity(), event.getDamage());
-        }
+        ((CustomItem) exItem).getHitHandlers().forEach(h -> h.onHit(weapon, player, event.getEntity(), event.getDamage()));
     }
 
     @EventHandler
@@ -102,9 +100,7 @@ public class ItemListener implements Listener {
             return;
         }
 
-        if (((CustomItem) exItem).hasRightClickHandler()) {
-            ((CustomItem) exItem).getRightClickHandler().onRightClick(stack, event.getPlayer());
-        }
+        ((CustomItem) exItem).getRightClickHandlers().forEach(h -> h.onRightClick(stack, event.getPlayer()));
     }
 
     @EventHandler
@@ -120,26 +116,18 @@ public class ItemListener implements Listener {
             return;
         }
 
-        if (((CustomItem) exItem).hasDropHandler()) {
-            ((CustomItem) exItem).getDropHandler().onDrop(stack, entity, event.getPlayer());
-        }
+        ((CustomItem) exItem).getDropHandlers().forEach(h -> h.onDrop(stack, entity, event.getPlayer()));
     }
 
-    public class Spigot implements Listener {
-
-        @EventHandler
-        public void onPlayerItemDamage(PlayerItemDamageEvent event) {
-            ItemStack tool = event.getPlayer().getInventory().getItemInHand();
-            ExItem exItem = api.getExItem(tool);
-            if (!(exItem instanceof CustomItem)) {
-                return;
-            }
-            boolean broken = tool.getDurability() + event.getDamage() >= tool.getType().getMaxDurability();
-            if (((CustomItem) exItem).hasDamageHandler()) {
-                ((CustomItem) exItem).getDamageHandler().onDamage(tool, event.getPlayer(), broken);
-            }
+    @EventHandler
+    public void onPlayerItemDamage(PlayerItemDamageEvent event) {
+        ItemStack tool = event.getPlayer().getInventory().getItemInHand();
+        ExItem exItem = api.getExItem(tool);
+        if (!(exItem instanceof CustomItem)) {
+            return;
         }
-
+        boolean broken = tool.getDurability() + event.getDamage() >= tool.getType().getMaxDurability();
+        ((CustomItem) exItem).getDamageHandlers().forEach(h -> h.onDamage(tool, event.getPlayer(), broken));
     }
 
 }
