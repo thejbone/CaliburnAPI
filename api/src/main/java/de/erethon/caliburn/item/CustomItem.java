@@ -14,6 +14,7 @@
  */
 package de.erethon.caliburn.item;
 
+import com.google.common.collect.Multimap;
 import de.erethon.caliburn.CaliburnAPI;
 import de.erethon.caliburn.category.IdentifierType;
 import de.erethon.caliburn.item.actionhandler.DamageHandler;
@@ -23,6 +24,11 @@ import de.erethon.caliburn.item.actionhandler.RightClickHandler;
 import de.erethon.caliburn.util.StringUtil;
 import de.erethon.commons.misc.EnumUtil;
 import de.erethon.headlib.HeadLib;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -36,12 +42,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * An item that has by default changed properties compared to Minecraft's vanilla items.

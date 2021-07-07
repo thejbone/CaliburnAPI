@@ -18,13 +18,13 @@
         <dependency>
             <groupId>de.erethon.commons</groupId>
             <artifactId>commons-dist</artifactId>
-            <version>6.2.2</version>
+            <version>6.2.5</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>de.erethon</groupId>
             <artifactId>headlib</artifactId>
-            <version>3.0.6</version>
+            <version>3.0.7</version>
             <scope>compile</scope>
         </dependency>
         <!-- From Minecraft -->
