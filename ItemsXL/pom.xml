@@ -46,7 +46,7 @@
                                 <includes>
                                     <include>de.erethon.commons:commons-dist</include>
                                     <include>de.erethon.vignette:vignette-dist</include>
-                                    <include>de.erethon:caliburn</include>
+                                    <include>de.erethon.caliburn:caliburn</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
