@@ -20,8 +20,6 @@ import de.erethon.caliburn.category.IdentifierType;
 import de.erethon.caliburn.item.CustomItem;
 import de.erethon.caliburn.item.ExItem;
 import de.erethon.caliburn.item.VanillaItem;
-import de.erethon.caliburn.listener.ItemListener;
-import de.erethon.caliburn.listener.MobListener;
 import de.erethon.caliburn.loottable.LootTable;
 import de.erethon.caliburn.mob.CustomMob;
 import de.erethon.caliburn.mob.ExMob;
@@ -31,7 +29,6 @@ import de.erethon.caliburn.util.ExSerialization;
 import de.erethon.caliburn.util.RecipeSerialization;
 import de.erethon.caliburn.util.SimpleSerialization;
 import de.erethon.commons.chat.MessageUtil;
-import de.erethon.commons.compatibility.CompatibilityHandler;
 import de.erethon.commons.compatibility.Version;
 import de.erethon.commons.config.RawConfiguration;
 import de.erethon.commons.misc.FileUtil;
@@ -114,10 +111,6 @@ public class CaliburnAPI {
 
         items.addAll(VanillaItem.getLoaded());
         mobs.addAll(VanillaMob.getLoaded());
-
-        Bukkit.getPluginManager().registerEvents(new MobListener(this), plugin);
-        ItemListener il = new ItemListener(this);
-        Bukkit.getPluginManager().registerEvents(il, plugin);
 
         ConfigurationSerialization.registerClass(CustomItem.class);
         ConfigurationSerialization.registerClass(CustomMob.class);

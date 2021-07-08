@@ -24,6 +24,8 @@ import de.erethon.commons.javaplugin.DREPluginSettings;
 import de.erethon.itemsxl.command.*;
 import de.erethon.itemsxl.config.IConfig;
 import de.erethon.itemsxl.item.ItemBoxListener;
+import de.erethon.itemsxl.listener.ItemListener;
+import de.erethon.itemsxl.listener.MobListener;
 import de.erethon.vignette.api.VignetteAPI;
 import java.io.File;
 import org.bukkit.ChatColor;
@@ -56,6 +58,8 @@ public class ItemsXL extends DREPlugin {
         loadAPI();
         loadICommandCache();
 
+        manager.registerEvents(new MobListener(api), this);
+        manager.registerEvents(new ItemListener(api), this);
         manager.registerEvents(new ItemBoxListener(this), this);
     }
 
