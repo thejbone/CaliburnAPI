@@ -19,18 +19,14 @@ package de.erethon.caliburn.loottable;
 import de.erethon.caliburn.CaliburnAPI;
 import de.erethon.commons.chat.MessageUtil;
 import de.erethon.commons.compatibility.Version;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.*;
 
 /**
  * A loot table e.g. for mob drops.
@@ -374,6 +370,7 @@ public class LootTable implements ConfigurationSerializable {
         List<ItemStack> lootList = new ArrayList<>();
         for (Entry entry : entries.values()) {
             if (new Random().nextInt(100) < entry.getLootChance()) {
+                entry.getLootItem().setAmount(new Random().nextInt(entry.getLootItem().getAmount()));
                 lootList.add(entry.getLootItem());
             }
         }
